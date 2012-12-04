@@ -31,11 +31,12 @@
 #include "lrucache0x.h"
 
 
+template<template<typename...> class Container>
 void TestInts() {
-  LRUCache<int, int>       cache(4);
-  std::list<int>           l;
-  std::list<int>::iterator i;
-  int                      n;
+  LRUCache<int, int, Container> cache(4);
+  std::list<int>                l;
+  std::list<int>::iterator      i;
+  int                           n;
 
   int three = 3;
 
@@ -103,11 +104,14 @@ class pointerTest {
 };
 
 
+template<template<typename...> class Container>
 void TestPointers() {
-  LRUCache<int, pointerTest*, std::unordered_map> cache(4);
-  std::list<int>                                  l;
-  std::list<int>::iterator                        i;
-  int                                             n;
+  LRUCache<int, pointerTest*, Container> cache(4);
+  std::list<int>                         l;
+  std::list<int>::iterator               i;
+  int                                    n;
+
+  destructorCalled = 0;
 
   pointerTest* three = new pointerTest(3);
 
@@ -182,11 +186,12 @@ void TestPointers() {
 }
 
 
+template<template<typename...> class Container>
 void TestStdStrings() {
-  LRUCache<std::string, std::string> cache(4);
-  std::list<std::string>             l;
-  std::list<std::string>::iterator   i;
-  int                                n;
+  LRUCache<std::string, std::string, Container> cache(4);
+  std::list<std::string>                        l;
+  std::list<std::string>::iterator              i;
+  int                                           n;
 
   std::string three = "3";
 
@@ -246,9 +251,14 @@ void TestStdStrings() {
 
 
 int main() {
-  TestInts();
-  TestPointers();
-  TestStdStrings();
+  TestInts<std::map>();
+  TestInts<std::unordered_map>();
+
+  TestPointers<std::map>();
+  TestPointers<std::unordered_map>();
+
+  TestStdStrings<std::map>();
+  TestStdStrings<std::unordered_map>();
 
   printf("All tests done.\n");
 

@@ -18,7 +18,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 //
-// Based on http://timday.bitbucket.org/lru.html by Tim Day.
+// Based loosely on http://timday.bitbucket.org/lru.html by Tim Day.
 //
 // Possible improvements:
 //  - return an interator instead of a value.
@@ -36,7 +36,6 @@
  * Simple Least Recently Used (LRU) cache.
  *
  * This cache will discards the least recently used item when space is needed.
- * All methods (except for resizing) are O(log n).
  *
  * Both KeyType and ItemType can be any type.
  * Keep in mind that internally an std::map is used to when using strings as keys use std::string.
@@ -77,16 +76,14 @@ class LRUCache {
 
   /**
    * Remove the least recently accessed element.
-   *
-   * O(log n)
    */
   void Evict() {
-    const typename KeyItemMap::iterator i = cache.find(lru.front());  // O(log n)
+    const typename KeyItemMap::iterator i = cache.find(lru.front());
 
     assert(i != cache.end());
 
-    cache.erase(i);   // O(1)
-    lru.pop_front();  // O(1)
+    cache.erase(i);
+    lru.pop_front();
 
     // Make sure the destructor is called.
     Pointer<ItemType>::Delete(i->second.first);
@@ -105,9 +102,6 @@ class LRUCache {
 
   /**
    * Resize the cache.
-   *
-   * O(m log n)
-   * where m is the number of items to evict.
    */
   void Resize(size_t capacity) {
     while (cache.size() > capacity) {
@@ -124,17 +118,15 @@ class LRUCache {
    * If the key was not set the default value for ItemType is returned.
    * For example for pointers this will be a NULL pointer. For integers
    * it will be 0.
-   *
-   * O(log n)
    */
   ItemType Get(const KeyType& key) {
-    const typename KeyItemMap::iterator i = cache.find(key);  // O(log n)
+    const typename KeyItemMap::iterator i = cache.find(key);
 
     if (i == cache.end()) {
       return ItemType();  // Return the default value for ItemType.
     } else {
       // Move the key back to the end of the lru (making it the most recently visited).
-      lru.splice(lru.end(), lru, i->second.second);  // O(1)
+      lru.splice(lru.end(), lru, i->second.second);
 
       return i->second.first;
     }
@@ -144,8 +136,6 @@ class LRUCache {
   /**
    * Set the entry at key to value.
    * Removing the least recently accessed element if needed.
-   *
-   * O(log n)
    */
   void Set(const KeyType& key, const ItemType value) {
     // Setting the capacity to 0 will disable the cache.
@@ -153,7 +143,7 @@ class LRUCache {
       return;
     }
 
-    const typename KeyItemMap::iterator i = cache.find(key);  // O(log n)
+    const typename KeyItemMap::iterator i = cache.find(key);
 
     if (i == cache.end()) {
       // Make sure we have room.
@@ -163,10 +153,10 @@ class LRUCache {
 
       // Insert the key into the back of the lru list (making it the most recently visited).
       // We need a pointer to the entry for the map.
-      const typename KeyTypeList::iterator j = lru.insert(lru.end(), key);  // O(1)
+      const typename KeyTypeList::iterator j = lru.insert(lru.end(), key);
 
       // Insert the value into the map.
-      cache.insert(std::make_pair(key, std::make_pair(value, j)));  // O(log n)
+      cache.insert(std::make_pair(key, std::make_pair(value, j)));
     } else {
       // Make sure the destructor is called.
       Pointer<ItemType>::Delete(i->second.first);
@@ -174,25 +164,23 @@ class LRUCache {
       i->second.first = value;
 
       // Move the key back to the end of the lru (making it the most recently visited).
-      lru.splice(lru.end(), lru, i->second.second);  // O(1)
+      lru.splice(lru.end(), lru, i->second.second);
     }
   }
 
 
   /**
    * Remove the element with the specified key.
-   *
-   * O(log n)
    */
   void Remove(const KeyType& key) {
-    const typename KeyItemMap::iterator i = cache.find(key);  // O(log n)
+    const typename KeyItemMap::iterator i = cache.find(key);
 
     if (i == cache.end()) {
       return;
     }
 
-    cache.erase(i);   // O(1)
-    lru.remove(key);  // O(1)
+    cache.erase(i);
+    lru.remove(key);
 
     // Make sure the destructor is called.
     Pointer<ItemType>::Delete(i->second.first);

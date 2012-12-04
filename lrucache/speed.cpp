@@ -104,8 +104,8 @@ double TestStrings(int cacheSize, int keySize, int valueSize) {
 
 int main(int argc, char** argv) {
   if (argc < 3) {
-    printf("Usage: %s [out.dat] [mode]\n\n", argv[0]);
-    printf("Posible modes: string-keys, string-values, string-cache, ints\n");
+    printf("Usage: %s data.dat mode\n\n", argv[0]);
+    printf("Available modes: string-keys, string-values, string-cache, int-cache\n");
   } else {
     FILE* fp = fopen(argv[1], "w");
 

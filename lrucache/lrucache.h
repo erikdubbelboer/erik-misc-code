@@ -18,7 +18,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 //
-// Based on http://timday.bitbucket.org/lru.html by Tim Day.
+// Based loosely on http://timday.bitbucket.org/lru.html by Tim Day.
 //
 // Possible improvements:
 //  - return an interator instead of a value.
