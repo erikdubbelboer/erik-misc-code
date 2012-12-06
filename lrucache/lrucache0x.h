@@ -45,7 +45,7 @@ template <class KeyType, class ItemType, template<typename...> class MapType = s
 class LRUCache {
  private:
   typedef std::list<KeyType> KeyTypeList;
-  typedef MapType<KeyType, std::pair<ItemType, typename KeyTypeList::iterator> > KeyItemMap;
+  typedef MapType<KeyType, std::pair<ItemType, typename KeyTypeList::iterator>> KeyItemMap;
 
   KeyTypeList lru;    // List of recently accessed items. The last item is the most recent.
   KeyItemMap  cache;  // Map of cached items.
@@ -78,7 +78,7 @@ class LRUCache {
    * Remove the least recently accessed element.
    */
   void Evict() {
-    const typename KeyItemMap::iterator i = cache.find(lru.front());
+    const auto i = cache.find(lru.front());
 
     assert(i != cache.end());
 
@@ -120,7 +120,7 @@ class LRUCache {
    * it will be 0.
    */
   ItemType Get(const KeyType& key) {
-    const typename KeyItemMap::iterator i = cache.find(key);
+    const auto i = cache.find(key);
 
     if (i == cache.end()) {
       return ItemType();  // Return the default value for ItemType.
@@ -143,7 +143,7 @@ class LRUCache {
       return;
     }
 
-    const typename KeyItemMap::iterator i = cache.find(key);
+    const auto i = cache.find(key);
 
     if (i == cache.end()) {
       // Make sure we have room.
@@ -153,7 +153,7 @@ class LRUCache {
 
       // Insert the key into the back of the lru list (making it the most recently visited).
       // We need a pointer to the entry for the map.
-      const typename KeyTypeList::iterator j = lru.insert(lru.end(), key);
+      const auto j = lru.insert(lru.end(), key);
 
       // Insert the value into the map.
       cache.insert(std::make_pair(key, std::make_pair(value, j)));
@@ -173,7 +173,7 @@ class LRUCache {
    * Remove the element with the specified key.
    */
   void Remove(const KeyType& key) {
-    const typename KeyItemMap::iterator i = cache.find(key);
+    const auto i = cache.find(key);
 
     if (i == cache.end()) {
       return;
