@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8>
+<title>getCookieByName</title>
+<script id=code>
+
+function getCookieByName(name) {
+  // According to RFC 2109 cookies can either be seperated by ';' or ','.
+  var res = new RegExp(
+    // Beginning of the string or just after the previous cookie.
+    // Skip the whitespace.
+    '(?:^|[,;])\\s*' +
+
+    name +
+
+    // Value ending in a ';', ',' or the end of the string.
+    '=([^,;]*)(?:[,;]|$)').exec(document.cookie);
+
+  return res ? res[1] : null;
+}
+
+</script>
+</head>
+<body>
+
+<h2>getCookieByName()</h2>
+<pre id=codeplain></pre>
+
+<h2>Tests</h2>
+<div id=log></div>
+
+<script>
+document.getElementById('codeplain').innerHTML = document.getElementById('code').innerHTML.replace(/^\s*/, '');
+
+var log   = document.getElementById('log');
+var tests = [
+  ['foo=bar'          , 'foo'   , 'bar'],
+  ['foo=bar'          , 'faa'   , null ],
+  ['a=b; foo=bar'     , 'foo'   , 'bar'],
+  ['a=b; foo=bar; c=d', 'foo'   , 'bar'],
+  ['foo=bar; a=b'     , 'foo'   , 'bar'],
+  ['foo=bar'          , 'fo'    , null ],
+  ['ffoo=bar; foo=baz', 'foo'   , 'baz']
+];
+
+// We don't want to change document.cookie so change the function to use window.testCase instead for our tests.
+eval(document.getElementById('code').innerHTML.replace(/document\.cookie/g, 'window.testCase'));
+
+for (var i = 0; i < tests.length; ++i) {
+  window.testCase = tests[i][0];
+
+  var value = getCookieByName(tests[i][1]);
+
+  log.innerHTML += '<span style="display: block; float: left; width: 10em">' + tests[i][0] + '</span>' + ((value === tests[i][2]) ? ' passed' : (' <strong>failed</strong>: ' + value + ' != ' + tests[i][2])) + '<br>';
+}
+
+log.innerHTML += '<br>all tests done.';
+
+</script>
+
+</body>
+</html>

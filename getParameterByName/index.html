@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8>
+<title>getParameterByName</title>
+<script id=code>
+
+function getParameterByName(name) {
+  var res = new RegExp(
+      // Parameter names always start after a ? or &.
+      '[\?&]' +
+
+      // Make sure any [ or ] are escaped in the name.
+      name.replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') +
+
+      // Either match a =... or match an empty value.
+      // Values can be terminated by an & a # or the end of the string ($).
+      '(?:=([^&#]*))?(?:[&#]|$)'
+  ).exec(window.location.search);
+
+  return res ?
+    (res[1] ? // res[1] will be undefined for a parameter without value.
+      decodeURIComponent(res[1].replace(/\+/g, ' ')) : ''
+    ) : null;
+}
+
+</script>
+</head>
+<body>
+
+<h2>getParameterByName()</h2>
+<pre id=codeplain></pre>
+
+<h2>Tests</h2>
+<div id=log></div>
+
+<script>
+document.getElementById('codeplain').innerHTML = document.getElementById('code').innerHTML.replace(/^\s*/, '');
+
+var log   = document.getElementById('log');
+var tests = [
+  ['?foo=bar'            , 'foo'   , 'bar'    ],
+  ['?foo=bar'            , 'faa'   , null     ],
+  ['?a=b&foo=bar'        , 'foo'   , 'bar'    ],
+  ['?a=b&foo=bar&c=d'    , 'foo'   , 'bar'    ],
+  ['?foo=bar&a=b'        , 'foo'   , 'bar'    ],
+  ['?foo=bar#a'          , 'foo'   , 'bar'    ],
+  ['?foo[0]=bar'         , 'foo[0]', 'bar'    ],
+  ['?foo[]=bar&foo[]=baz', 'foo[]' , 'bar'    ],
+  ['?foo=bar+bar'        , 'foo'   , 'bar bar'],
+  ['?foo&bar'            , 'foo'   , ''       ],
+  ['?foo=bar'            , 'fo'    , null     ],
+  ['?ffoo=bar&foo=baz'   , 'foo'   , 'baz'    ]
+];
+
+// We don't want to change window.location.search so change the function to use window.testCase instead for our tests.
+eval(document.getElementById('code').innerHTML.replace(/window\.location\.search/g, 'window.testCase'));
+
+for (var i = 0; i < tests.length; ++i) {
+  window.testCase = tests[i][0];
+
+  var value = getParameterByName(tests[i][1]);
+
+  log.innerHTML += '<span style="display: block; float: left; width: 10em">' + tests[i][0] + '</span>' + ((value === tests[i][2]) ? ' passed' : (' <strong>failed</strong>: ' + value + ' != ' + tests[i][2])) + '<br>';
+}
+
+log.innerHTML += '<br>all tests done.';
+
+</script>
+
+</body>
+</html>
