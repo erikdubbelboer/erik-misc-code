@@ -31,7 +31,10 @@ function getCookieByName(name) {
 <div id=log></div>
 
 <script>
-document.getElementById('codeplain').innerHTML = document.getElementById('code').innerHTML.replace(/^\s*/, '');
+document.getElementById('codeplain').innerHTML = document.getElementById('code').innerHTML
+  .replace(/^\s*/, '')
+  .replace(/\n/g, '<br>') // These two are required for this to work in IE6, 7 and 8.
+  .replace(/ /g, '&nbsp');
 
 var log   = document.getElementById('log');
 var tests = [
