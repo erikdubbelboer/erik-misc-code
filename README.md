@@ -15,3 +15,7 @@ getCookieByName
 ===============
 See: [http://blog.dubbelboer.com/2012/12/21/getParameterByName-getCookieByName.html](http://blog.dubbelboer.com/2012/12/21/getParameterByName-getCookieByName.html)
 
+serialize
+=========
+See: [http://dubbelboer.com/erik-misc-code/serialize/index.html](http://dubbelboer.com/erik-misc-code/serialize/index.html)
+
