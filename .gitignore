@@ -2,3 +2,4 @@ lrucache/*.dat
 lrucache/speed
 lrucache/test
 lrucache/test0x
+chaining-hash-table/test
