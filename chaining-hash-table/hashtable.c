@@ -181,7 +181,7 @@ entry_t* hashtable_find_or_add(hashtable_t* hash, uint64_t id) {
 
 // Evict the oldest entry.
 void hashtable_evict(hashtable_t* hash) {
-  if (hash->oldest == 0) {
+  if (hash->oldest->id == 0) {
     // Nothing to evict.
     return;
   }
