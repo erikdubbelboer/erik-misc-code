@@ -1,9 +1,6 @@
-<!doctype html>
-<html>
-<head>
-<meta charset=utf-8>
-<title>serialize</title>
-<script id=code>
+
+var assert = require('assert');
+
 
 function stringify(o) {
   if (typeof o === 'undefined') {
@@ -57,32 +54,7 @@ function stringify(o) {
   return o.toString();
 }
 
-</script>
-</head>
-<body>
 
-<h2>serialize()</h2>
-
-<p>
-This function can be used to serialize a javascript variable.<br>
-This does more than JSON.stringify seeing as JSON is just a subset of what a javascript variable can contain.
-</p>
-<p>
-This function works in: IE 6+, Firefox 6+, Chrome 22+, Safari 6+ and Opera 12+.
-</p>
-
-<pre id=codeplain></pre>
-
-<h2>Tests</h2>
-<div id=log></div>
-
-<script>
-document.getElementById('codeplain').innerHTML = document.getElementById('code').innerHTML
-  .replace(/^\s*/, '')
-  .replace(/\n/g, '<br>') // These two are required for this to work in IE6, 7 and 8.
-  .replace(/ /g, '&nbsp');
-
-var log   = document.getElementById('log');
 var tests = [
   1,
   'a',
@@ -102,28 +74,15 @@ var tests = [
 ];
 
 for (var i = 0; i < tests.length; ++i) {
-  var passed = true;
+  (function(i) {
+    describe('test ' + i, function() {
+      it('should serialize: ' + ((tests[i] == undefined) ? 'undefined' : tests[i].toString()), function() {
+        var test;
+        eval('test = ' + stringify(tests[i]));
 
-  try {
-    var test;
-    
-    eval('test = ' + stringify(tests[i]));
-
-    if (window.JSON && JSON.stringify) {
-      if (JSON.stringify(test) != JSON.stringify(tests[i])) {
-        passed = false;
-      }
-    }
-  } catch (e) {
-    passed = false;
-  }
-
-  log.innerHTML += '<span style="display: block; float: left; width: 10em">' + i + '</span>' + (passed ? ' passed' : ' <strong>failed</strong>') + '<br>';
+        assert.equal(JSON.stringify(test), JSON.stringify(tests[i]));
+      });
+    });
+  })(i);
 }
 
-log.innerHTML += '<br>all tests done.';
-
-</script>
-
-</body>
-</html>
