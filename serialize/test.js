@@ -1,9 +1,4 @@
 
-if (typeof window !== 'undefined') {
-  var _stringify = stringify;
-  var require    = function() { return _stringify; };
-}
-
 var stringify = require('./stringify.js');
 
 
