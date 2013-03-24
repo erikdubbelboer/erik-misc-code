@@ -53,7 +53,5 @@ function stringify(o) {
 
 
 //<testonly>
-if (typeof window === 'undefined') {
-  module.exports = stringify;
-}
+module.exports = stringify;
 

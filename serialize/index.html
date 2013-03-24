@@ -30,12 +30,14 @@ This function works in: IE 6+, Firefox 6+, Chrome 22+, Safari 6+ and Opera 12+.
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="../node_modules/mocha/mocha.js"></script>
+<script>
+window.module = {};
+</script>
 <script src="stringify.js"></script>
 <script>
 mocha.setup('bdd');
 
-var _stringify = stringify;
-var require    = function() { return _stringify; };
+var require = function() { return window.module.exports; };
 </script>
 <script src="test.js"></script>
 <script>
