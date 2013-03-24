@@ -5,13 +5,13 @@
     "mocha": "~1.7.4"
   },
   "testling": {
-    "browsers": [
+    "browsers": {
       "ie":     [6, 7, 8, 9],
       "ff":     [17, 18, 19],
       "chrome": [23, 24, 25],
       "safari": [5.1, 6 ],
       "opera":  [12]
-    ],
+    },
     "harness": "mocha",
     "files"  : "serialize/test.js"
   }
