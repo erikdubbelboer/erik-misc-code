@@ -1,8 +1,10 @@
 
-if (typeof window === 'undefined') {
-  // Only for nodejs.
-  var stringify = require('./stringify.js');
+if (typeof window !== 'undefined') {
+  var _stringify = stringify;
+  var require    = function() { return _stringify; };
 }
+
+var stringify = require('./stringify.js');
 
 
 var tests = [
