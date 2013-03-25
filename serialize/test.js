@@ -1,7 +1,6 @@
 
 var stringify = require('./stringify.js');
 
-
 var tests = [
   1,
   'a',
