@@ -34,3 +34,9 @@ chaining-hash-table
 A simple hashtable in C. It uses chaining for collisions and will automatically evict the oldest entry when out of space.
 All operations are constant in average case and linear in container size in worst case (because of the chain).
 
+
+locks
+=====
+
+Just some tests with different kinds of users space lock implementations. Work in progress.
+

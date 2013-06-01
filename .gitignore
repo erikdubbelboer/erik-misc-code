@@ -4,3 +4,5 @@ lrucache/test
 lrucache/test0x
 chaining-hash-table/test
 node_modules
+locks/nanosleepmin
+locks/test
