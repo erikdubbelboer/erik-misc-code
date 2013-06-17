@@ -6,3 +6,4 @@ chaining-hash-table/test
 node_modules
 locks/nanosleepmin
 locks/test
+lrucache-c/test
