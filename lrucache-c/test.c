@@ -59,6 +59,28 @@ static void lru_free(struct test_s* entry) {
 }
 
 
+void bug1() {
+  struct test_s a1  = { .id = 1 };
+  struct test_s a2  = { .id = 2 };
+  struct test_s a3  = { .id = 3 };
+
+  LRU_TYPE(test_s) cache;
+
+  LRU_INIT(&cache, 4);
+  
+  LRU_INSERT(test_s, &cache, &a1);
+  LRU_INSERT(test_s, &cache, &a2);
+  LRU_INSERT(test_s, &cache, &a3);
+  LRU_FIND(test_s, &cache, &a2);
+  LRU_FIND(test_s, &cache, &a1);
+  
+  LRU_REMOVE(test_s, &cache, LRU_HEAD(&cache));
+  LRU_REMOVE(test_s, &cache, LRU_HEAD(&cache));
+  LRU_REMOVE(test_s, &cache, LRU_HEAD(&cache));
+  assert(LRU_HEAD(&cache) == 0);
+}
+
+
 int main() {
   struct test_s a1  = { .id = 1 };
   struct test_s a2  = { .id = 2 };
@@ -123,6 +145,10 @@ int main() {
   assert(LRU_FIND(test_s, &cache, &a3) == 0);
   assert(LRU_FIND(test_s, &cache, &a4) == 0);
   assert(LRU_FIND(test_s, &cache, &a5) == 0);
+
+
+  bug1();
+
 
   printf("All tests passed.\n");
 
