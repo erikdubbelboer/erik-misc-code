@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8>
+<title>delParameterByName</title>
+<script id=code>
+
+function delParameterByName(from, name) {
+  // Make sure any [ or ] are escaped in the name.
+  name = name.replace(/\[/g, '\\\[').replace(/\]/g, '\\\]');
+
+  return from.replace(new RegExp(
+      // Parameter names always start after a ? or &.
+      '\\?' +
+
+      name +
+
+      // Either match a =... or match an empty value.
+      // Values can be terminated by an & a # or the end of the string ($).
+      '(?:=[^&#]*)?(?:&|(#)|$)'
+  ), '?$1').replace(new RegExp(
+      // Parameter names always start after a ? or &.
+      '&' +
+
+      name +
+
+      // Either match a =... or match an empty value.
+      // Values can be terminated by an & a # or the end of the string ($).
+      '(?:=[^&#]*)?(?:([&#])|$)'
+  ), '$1');
+}
+
+</script>
+</head>
+<body>
+
+<h2>delParameterByName()</h2>
+<pre id=codeplain></pre>
+
+<h2>Tests</h2>
+<div id=log></div>
+
+<script>
+document.getElementById('codeplain').innerHTML = document.getElementById('code').innerHTML
+  .replace(/^\s*/, '')
+  .replace(/\n/g, '<br>') // These two are required for this to work in IE6, 7 and 8.
+  .replace(/ /g, '&nbsp');
+
+var log   = document.getElementById('log');
+var tests = [
+  ['?foo=bar'            , 'foo'   , '?'         ],
+  ['?foo=bar'            , 'faa'   , '?foo=bar'  ],
+  ['?a=b&foo=bar'        , 'foo'   , '?a=b'      ],
+  ['?a=b&foo=bar&c=d'    , 'foo'   , '?a=b&c=d'  ],
+  ['?foo=bar&a=b'        , 'foo'   , '?a=b'      ],
+  ['?foo=bar#a'          , 'foo'   , '?#a'       ],
+  ['?foo[0]=bar'         , 'foo[0]', '?'         ],
+  ['?foo[]=bar&foo[]=baz', 'foo[]' , '?foo[]=baz'],
+  ['?foo=bar+bar'        , 'foo'   , '?'         ],
+  ['?foo&bar'            , 'foo'   , '?bar'      ],
+  ['?foo=bar'            , 'fo'    , '?foo=bar'  ],
+  ['?ffoo=bar&foo=baz'   , 'foo'   , '?ffoo=bar' ]
+];
+
+for (var i = 0; i < tests.length; ++i) {
+  var value = delParameterByName(tests[i][0], tests[i][1]);
+
+  log.innerHTML += '<span style="display: block; float: left; width: 10em">' + tests[i][0] + '</span>' + ((value === tests[i][2]) ? ' passed' : (' <strong>failed</strong>: ' + value + ' != ' + tests[i][2])) + '<br>';
+}
+
+log.innerHTML += '<br>all tests done.';
+
+</script>
+
+</body>
+</html>

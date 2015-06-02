@@ -8,7 +8,7 @@
 function getParameterByName(name) {
   var res = new RegExp(
       // Parameter names always start after a ? or &.
-      '[\?&]' +
+      '[\\?&]' +
 
       // Make sure any [ or ] are escaped in the name.
       name.replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') +
