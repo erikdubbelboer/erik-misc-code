@@ -192,8 +192,8 @@ class LRUCache {
       return;
     }
 
-    cache.erase(i);   // O(1)
-    lru.remove(key);  // O(1)
+    cache.erase(i);               // O(1)
+    lru.erase(i->second.second);  // O(1)
 
     // Make sure the destructor is called.
     Pointer<ItemType>::Delete(i->second.first);

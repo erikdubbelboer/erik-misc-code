@@ -45,7 +45,7 @@ template <class KeyType, class ItemType, template<typename...> class MapType = s
 class LRUCache {
  private:
   typedef std::list<KeyType> KeyTypeList;
-  typedef MapType<KeyType, std::pair<ItemType, typename KeyTypeList::iterator>> KeyItemMap;
+  typedef MapType<KeyType, std::pair<ItemType, typename KeyTypeList::iterator> > KeyItemMap;
 
   KeyTypeList lru;    // List of recently accessed items. The last item is the most recent.
   KeyItemMap  cache;  // Map of cached items.
@@ -180,7 +180,7 @@ class LRUCache {
     }
 
     cache.erase(i);
-    lru.remove(key);
+    lru.erase(i->second.second);
 
     // Make sure the destructor is called.
     Pointer<ItemType>::Delete(i->second.first);
